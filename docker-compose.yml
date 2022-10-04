@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  db:
+    image: 'postgres:latest'
+    container_name: db
+    environment:
+      - POSTGRES_DB=evaluacion_1
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/postgresql/data
+  app:
+    image: 'derflinger/msantiagoapp'
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/evaluacion_1
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+    ports:
+      - '8090:8090'
