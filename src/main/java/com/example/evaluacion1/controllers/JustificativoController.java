@@ -30,23 +30,18 @@ public class JustificativoController {
     public String cargaJustificativo(@RequestParam("rut") String rut, @RequestParam("date") String fecha, @RequestParam("justf") MultipartFile file, RedirectAttributes ms){
 
         //obtener empleados
-        System.out.println("try get all empleados");
         ArrayList<EmpleadoEntity> empleados=empleadoService.obtenerEmpleados();
 
 
 
         //verificar rut
         Integer validate_rut = 0;
-        System.out.println("search empleado");
         for (EmpleadoEntity e:empleados){
-            System.out.println(e.getRut());
             if (e.getRut().equals(rut)){
-                System.out.println("empleado encontrado");
                 validate_rut = 1;
             }
         }
         if (validate_rut == 1){
-            System.out.println("existe el empleado");
             //contenido archivo
             String contenido = upload.leer_file(file);
             //crear entidad
@@ -58,7 +53,6 @@ public class JustificativoController {
 
         }
         else{
-            System.out.println(" NO existe el empleado");
             ms.addFlashAttribute("mensaje_3", "Empleado no existe");
 
         }

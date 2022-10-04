@@ -38,7 +38,6 @@ public class PlanillaController {
         planillaService.calcularDatosParaSueldo();
 
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         //existen todas las asistencias
         ArrayList<PlanillaEntity> planillas = null;
         try {

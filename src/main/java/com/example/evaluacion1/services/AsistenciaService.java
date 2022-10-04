@@ -26,7 +26,6 @@ public class AsistenciaService {
     }
 
     public AsistenciaEntity crearAsistencia(MarcasRelojEntity m, MarcasRelojEntity mr) {
-        System.out.println("asistencia");
         AsistenciaEntity newAs = new AsistenciaEntity();
         newAs.setRut(m.getRut());
         newAs.setIngreso(m.getFechaH());
@@ -36,7 +35,6 @@ public class AsistenciaService {
         Date fecha1= mr.getFechaH();
         Date fecha2= m.getFechaH();
         Integer horas = calcularDiferenciaHora(fecha1,fecha2);
-        System.out.println(horas);
         newAs.setHoras(horas);
 
         String newFecha = m.getFecha() + " " + "08:00";
@@ -49,7 +47,6 @@ public class AsistenciaService {
         }
 
         Integer atraso = calcularDiferenciaHora(fecha2,fechaBase);
-        System.out.println(atraso);
         newAs.setAtraso(atraso);
 
         return newAs;

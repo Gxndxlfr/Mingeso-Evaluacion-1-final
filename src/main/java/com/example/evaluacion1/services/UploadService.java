@@ -18,21 +18,16 @@ public class UploadService {
         } catch (IOException e) {
             throw new RuntimeException("Error al leer archivo 1");
         }
-        System.out.println("contenido");
-        System.out.println(contenido);
         return contenido;
     }
 
     public String leer_file(MultipartFile file) {
-        System.out.println("try read justf");
         String contenido = null;
         try {
             contenido = new String(file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException("Error al leer justf");
         }
-        System.out.println("contenido justf");
-        System.out.println(contenido);
         return contenido;
     }
 

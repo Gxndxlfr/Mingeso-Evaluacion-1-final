@@ -22,15 +22,12 @@ public class MarcasRelojService {
 
     public String[] separarPorPuntoComa(String linea){
         String[] newLinea = linea.split(";");
-        System.out.println("new linea");
-        System.out.println(newLinea[0]);System.out.println(newLinea[1]);System.out.println(newLinea[2]);
+
         return newLinea;
     }
     public Date StringtoDate(String fecha, String hora){
 
-        System.out.println("String to Date");
         String newFecha = fecha + " " + hora;
-        System.out.println(newFecha);
         Date newDate;
         SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         try {
@@ -62,8 +59,6 @@ public class MarcasRelojService {
         String[] lineas = separarPorLineas(contenido);
 
         for (String l: lineas){
-            System.out.println("linea");
-            System.out.println(l);
             String[] datos = separarPorPuntoComa(l);
             MarcasRelojEntity marca = crearMarca(datos);
             marcas.add(marca);

@@ -35,19 +35,16 @@ public class PlanillaService {
     public ArrayList<PlanillaEntity> calcularSueldos() throws ParseException {
 
         //Recorrer Empleados
-        System.out.println("calcular sueldo A");
         ArrayList<EmpleadoEntity> empleados=empleadoService.obtenerEmpleados();
 
         ArrayList<MarcasRelojEntity> marcasReloj =marcasRelojService.obtenerMarcasReloj();
 
         int lenMarcas = marcasReloj.size();
         String fechaActual = marcasReloj.get(lenMarcas-1).getFecha();
-        System.out.println("ultima fecha: " + fechaActual);
 
         ArrayList<PlanillaEntity> planillas = new ArrayList<>();
         for(EmpleadoEntity e:empleados){
 
-            System.out.println("calcular sueldo B");
             PlanillaEntity newPlanilla = new PlanillaEntity();
 
             newPlanilla.setRut(e.getRut());
@@ -80,10 +77,7 @@ public class PlanillaService {
 
 
             //pago horas extras
-
-            System.out.println("calcular sueldo C");
             ArrayList<AsistenciaEntity> horasExtra = asistenciaService.obtenerAsistencias();
-            System.out.println("horas extra");
             int horasExtrasEmpleado = 0;
 
             AutorizacionEntity autorizacion = autorizacionService.obtenerAutorizacionByRut(e.getRut());
@@ -92,13 +86,11 @@ public class PlanillaService {
 
 
                     if (he.getHoras() > 10 && he.getRut().equals(e.getRut())) {
-                        System.out.println(he);
                         horasExtrasEmpleado = horasExtrasEmpleado + (he.getHoras() - 10);
                     }
 
                 }
             }
-            System.out.println(horasExtrasEmpleado);
             int pagoHorasExtras = 0;
             if (e.getCategoria().equals("1")){
                 pagoHorasExtras = 25000*horasExtrasEmpleado;
@@ -111,15 +103,15 @@ public class PlanillaService {
 
             newPlanilla.setPagoHorasExtra(pagoHorasExtras);
 
-            System.out.println("calcular sueldo D");
+
             //Descuento
             ArrayList<AsistenciaEntity> atrasos = asistenciaService.obtenerAsistencias();
-            System.out.println("atrasos");
+
             double montoDescuento = 0;
             for(AsistenciaEntity a:atrasos){
                 int minAtrasos = a.getAtraso();
                 if(minAtrasos > 10 && a.getRut().equals(e.getRut())){
-                    System.out.println(a);
+
                     if(minAtrasos > 10 && minAtrasos <= 25){
                         sueldoF =  (sueldoF - (sueldoF*0.01));
                         montoDescuento =  (montoDescuento + (sueldoF*0.01));
@@ -133,11 +125,11 @@ public class PlanillaService {
                         InasistenciaEntity inasistencia = new InasistenciaEntity();
                         inasistencia.setFecha(a.getFecha());
                         inasistencia.setRut(e.getRut());
-                        System.out.println("calcular sueldo D1");
+
                         inasistenciaService.guardarInasistencia(inasistencia);
-                        System.out.println("calcular sueldo D2");
+
                         JustificativoEntity justf = justificativoService.obtenerJustificativoPorRutYFecha(e.getRut(),a.getFecha());
-                        System.out.println("calcular sueldo D3");
+
                         if(justf == null){
                             sueldoF =  (sueldoF - (sueldoF*0.15));
                             montoDescuento =  (montoDescuento + (sueldoF*0.15));
@@ -147,7 +139,6 @@ public class PlanillaService {
             }
             newPlanilla.setDescuento(montoDescuento);
 
-            System.out.println("calcular sueldo E");
             double bonificacion = 0;
             if (yearsService < 5){
                 bonificacion = 0;
@@ -183,11 +174,8 @@ public class PlanillaService {
 
             planillas.add(newPlanilla);
 
-            System.out.println("calcular sueldo F");
 
         }
-
-        System.out.println("calcular sueldo G");
 
         return planillas;
     }
@@ -218,17 +206,8 @@ public class PlanillaService {
         for(MarcasRelojEntity m:marcasReloj){
             if(marcasRevisadas.get(Math.toIntExact(m.getId())-1).equals(0)){
 
-                System.out.println("Marcas revisadas");
-                System.out.println(marcasRevisadas);
-
-
-
-
-
-                System.out.println("Dia revisado :" + diaRevisado);
                 //revisar quien faltó el día anterior y dejar registro
                 if(m.getFechaH().getDate() != diaRevisado){
-                    System.out.println("cambio de día");
                     ArrayList<InasistenciaEntity> inasistencias = inasistenciaService.marcarInasistencias(marcasPorDia,empleados);
 
                     for (InasistenciaEntity i:inasistencias){
@@ -239,27 +218,16 @@ public class PlanillaService {
                     diaRevisado = m.getFechaH().getDate();
                     fechaStr = m.getFecha();
                 }
-                System.out.println("a");
                 //Asignar Fecha
                 int idMarcaReloj = Math.toIntExact(m.getId());
                 //fecha no revisada
                 if (marcasRevisadas.get(idMarcaReloj-1) == 0){
-                    System.out.println("b");
                     MarcasRelojEntity marca_2 = new MarcasRelojEntity();
                     for (MarcasRelojEntity mr:marcasReloj){
                         if(m.getFecha().equals(mr.getFecha())){
-                            System.out.println("c");
                             if(m.getRut().equals(mr.getRut())){
-                                System.out.println("d");
                                 Date fecha1 = m.getFechaH();
                                 Date fecha2 = mr.getFechaH();
-
-
-                                System.out.println("---------Fecha 1-----");
-                                System.out.println(m.getId());
-                                System.out.println(m.getFechaH().getYear()+1900);//año menos 1900
-                                System.out.println(m.getFechaH().getMonth()+1);
-                                System.out.println( m.getFechaH().getDate());
 
 
 
@@ -267,15 +235,6 @@ public class PlanillaService {
 
                                 if (!(fecha2.equals(fecha1))){
 
-                                    System.out.println("Aqui si");
-                                    System.out.println(m.getId());
-                                    System.out.println(mr.getId());
-
-                                    System.out.println("---------Fecha 2 confirmada-----");
-                                    System.out.println(mr.getId());
-                                    System.out.println(mr.getFechaH().getYear()+1900);//año menos 1900
-                                    System.out.println(mr.getFechaH().getMonth()+1);
-                                    System.out.println( mr.getFechaH().getDate());
 
                                     //Calcular info para planilla con nueva entidad asistencia
                                     AsistenciaEntity as = asistenciaService.crearAsistencia(m,mr);

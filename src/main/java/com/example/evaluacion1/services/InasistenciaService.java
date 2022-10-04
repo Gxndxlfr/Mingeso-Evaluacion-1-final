@@ -22,19 +22,13 @@ public class InasistenciaService {
             String rut = e.getRut();
             String fecha="" ;
             int encontrado = 0;
-            System.out.println("Empleado rut:");
-            System.out.println(rut);
             for(MarcasRelojEntity m:marcasPorDia){
-                System.out.println("rut analizado");
-                System.out.println(m.getRut());
                 fecha = m.getFecha();
                 if (m.getRut() == e.getRut()){
-                    System.out.println("Encontrado");
                     encontrado = 1;
 
                 }
             }
-            System.out.println("encontrado: " + encontrado);
             if (encontrado == 0){
 
                 InasistenciaEntity in = new InasistenciaEntity();
